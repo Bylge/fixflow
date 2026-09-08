@@ -19,8 +19,15 @@ the Windows side while the docs still live there, so planning changes are versio
 revertible from the first commit. History travels with the folder, so the M1 move into WSL
 costs nothing.
 
-**Compose runs backing services only** — `postgres`, `redis`, `mailpit`. PHP, Artisan, the
-queue worker and Vite run natively in WSL2. Containerising the app locally buys parity we
+**Compose runs backing services only** — `postgres` and `mailpit`. PHP, Artisan, the
+queue worker and Vite run natively in WSL2.
+
+**No cache or queue container until M8** — decided 2026-09-08. `CACHE_STORE=database` and
+`QUEUE_CONNECTION=database` until something actually dispatches a job or reads a cache, which
+is M8; the razor applied to infrastructure. When M8 needs one it is **Valkey**, not Redis:
+Redis has been tri-licensed since 8.0 with AGPLv3 the only OSI-approved option and a
+network-use clause that matters for hosted multi-tenant software, while Valkey is BSD-3 and
+protocol-identical — a one-line change of image name, nothing on the Laravel side. Containerising the app locally buys parity we
 already get from the OS and costs a rebuild on every change; the deployable image, if we
 end up building one, is a separate concern (`05-open-questions.md`).
 
@@ -34,8 +41,11 @@ hostnames justify. Enumerate them:
 
 Two tenants is exactly what the isolation tests need, and a fourth entry costs one line.
 
-**Required:** PHP 8.3+ with `pdo_pgsql`, `intl` (locale formatting), `fileinfo` (attachment
-MIME validation), plus the Laravel baseline. Composer, Node LTS, Docker Desktop with the
+**Required:** PHP 8.5 with `pdo_pgsql`, `intl`, `fileinfo`, plus the Laravel baseline.
+`intl` is not optional — `filament/support` requires `ext-intl` at composer time, so a
+missing one fails the install rather than a feature. `php8.5-opcache` does not exist as a
+package; naming it aborts the apt transaction. PHP 8.5 comes from `ppa:ondrej/php`; stock
+Ubuntu 24.04 has 8.3. Composer, Node LTS, Docker Desktop with the
 WSL2 backend.
 
 **Seeders build a multi-tenant world, not a single tenant.** Two tenants with overlapping
@@ -52,15 +62,32 @@ Runs on every pull request and on push to main. Four jobs, parallel:
 | `lint` | `pint --test` |
 | `static` | Larastan, level max |
 | `test` | Pest, against a PostgreSQL service container on the production major version |
-| `i18n` | `en`/`pl` key parity and the literal-string lint (`07-conventions.md`) |
+| `i18n` | `en`/`pl` key parity from M1; the literal-string lint joins it at M4 |
 
 No version matrix. One PHP version — the one production runs. Testing combinations we will
 never deploy is work that buys nothing.
 
+**The `i18n` job is split across two milestones** — decided 2026-09-08. Key parity ships at
+M1 as a real Pest test; the literal-string lint ships at M4, where `07-conventions.md`
+already puts it, because the skeleton's welcome page is wall-to-wall literals and the lint
+would fail on day one. M1 proves the job's *red* path with a throwaway unpaired key: a parity
+check over zero locale directories is a green that cannot go red, which is worse than no job
+at all.
+
 **Main is branch-protected: all four jobs green, or no merge.** That is the entire review
-process, so it does not get bypassed.
+process, so it does not get bypassed. Enforced with a repository **ruleset**, which requires
+a paid plan on a private repository — that is why the plan is a prerequisite of M1.1, not a
+convenience. Branches must also be up to date with `main` before merging, so nothing merges
+on a green run that no longer describes the code.
 
 ## CD
+
+**Lands at M11, not M1** — see `06-build-plan.md`. **Scripted, not Docker** (decided
+2026-09-08). Everything below is the specification M11 implements; none of it exists yet.
+
+Frontend assets are built **in CI** and travel with the release, so the server needs Composer
+but never Node — one fewer runtime to patch, and a broken build stops the deploy instead of
+half-breaking a live server.
 
 Deploy triggers on push to main, after CI passes. Never from a pull request.
 

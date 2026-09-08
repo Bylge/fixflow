@@ -6,3 +6,8 @@
 # OS noise
 Thumbs.db
 .DS_Store
+
+# Commercial, legal and pilot-identifying notes. Kept out of git so the repository can be
+# made public without a rewrite — the public fallback if the project finds no clients.
+# Still read by agents locally; see docs/private/README.md.
+docs/private/

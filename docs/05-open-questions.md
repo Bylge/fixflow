@@ -8,9 +8,9 @@ Everything not yet decided. Check here before assuming an answer exists.
 architecture makes this a late decision, so it stays open. It determines the handover
 mechanism (Docker image vs. a server we control) and who holds the backups.
 
-It no longer blocks the first deploy. `06-build-plan.md` M1 deploys to an owner-controlled
-VPS from week one; moving the pilot elsewhere later is a deployment target change, not an
-architecture change. Needed by M10.
+It no longer blocks anything early: deployment is **M11** as of 2026-09-08, and moving the
+pilot elsewhere later is a deployment-target change, not an architecture change. Needed by
+M11, which is itself needed by M10.
 
 **Backup ownership.** If it runs on their infrastructure, this must be agreed in writing
 before go-live, and a restore tested once.
@@ -21,8 +21,8 @@ specifically it blocks `06-build-plan.md` M8, so it must be answered by the end 
 
 **Domain and name.** `fixflow.pl`? Subdomain-per-tenant assumes a domain exists, and
 `03-architecture.md` now reserves `admin.` on it. Needed at M2, when subdomain resolution
-is built — a placeholder domain works for local and CI, but not for the M1 deploy target
-or for mail.
+is built — enumerated `*.fixflow.test` hosts work for local and CI. A real domain is not
+needed until M11 and mail.
 
 ## Product
 
@@ -31,14 +31,20 @@ a described workflow, not an observed one. Twenty minutes of "show me how a requ
 arrives and what you do with it" would either confirm this or save months. Highest-value
 open item on this page.
 
+> **Status 2026-09-07: deferred as a milestone.** `06-build-plan.md` M0 is the work; it is not
+> scheduled, and the deferral expires at the end of M4. What changed is not the answer but the
+> plan for getting one — the question stays open, stays the highest-value item here, and
+> becomes blocking when M5 starts (see the re-plan triggers in `06-build-plan.md`). Deferring
+> it did not make it smaller.
+
 **AI features in the product.** "AI-heavy" was stated in the context of AI-assisted
 *development*, which is covered by `CLAUDE.md`. Whether the product itself should ever do
 triage, summarisation or suggested replies is unanswered — and firmly out of the MVP
 either way.
 
-**Does Case B ever become real?** If the IT firm resells FixFlow to its pharmacy clients,
-the cross-company desk stops being hypothetical. Cheap to add, but it changes the product's
-positioning entirely.
+**Does Case B ever become real?** If the pilot firm resells FixFlow to the client companies
+it already serves, the cross-company desk stops being hypothetical. Cheap to add, but it
+changes the product's positioning entirely.
 
 **Is the portal enough as an intake channel?** If pilot users keep messaging on Messenger
 anyway, the problem was never the tooling, and email intake becomes urgent rather than
@@ -77,34 +83,24 @@ Answerable now by the razor, absent an objection:
 This graduates to `09-frontend.md` the day it is decided. Deciding it mid-step inside M5 is
 the failure mode — it is a conversation of its own, held before M5 starts.
 
-## Commercial
+## Commercial and legal
 
-**Pricing model.** Nothing decided. Per-agent/month is the category standard; a one-off
-implementation fee is where solo developers actually earn. Not needed until someone offers
-to pay.
+**Both moved out of git on 2026-09-08.** Pricing, whether the pilot pays, contract terms,
+GDPR/processor status, business entity and liability now live in
+`docs/private/01-pilot-and-commercial.md`. Still open, still unanswered, still read by agents
+locally — simply not published. Making the repository public is the fallback if the project
+finds no clients, and that fallback stays cheap only while this separation holds
+(`docs/private/README.md`).
 
-**Is the pilot paid or free?** Free buys goodwill and a reference; paid filters for real
-need. Undecided.
-
-**Who signs, and for what.** No contract template, no terms, no scope of support.
-
-## Legal
-
-Only becomes real if data for companies other than the pilot ends up on infrastructure the
-project owner controls:
-
-- Processor status under GDPR/RODO, and a *umowa powierzenia* per client
-- Privacy policy, terms of service
-- Business entity: JDG vs. sp. z o.o.
-- Liability for data loss, and whether it is capped in a contract
-
-Self-hosting on the client's own server sidesteps most of this — which is an argument for
-that model that has nothing to do with technology.
+Nothing technical moved. If a commercial or legal answer ever constrains the architecture,
+the *constraint* is recorded here in engineering terms and the reasoning stays private — for
+example, self-hosting on a client's own server is already argued for in `03-architecture.md`
+on its technical merits alone.
 
 ## Technical, deferred by design
 
-- Queue driver (Redis vs. database) — config decision at deploy time
-- Docker vs. scripted deploy — decided when the first server exists
+- Queue driver — `database` through M7; the choice is which engine replaces it at M8, and
+  `08-environment.md` records Valkey over Redis on licence grounds when that day comes
 - Whether Filament's built-in tenancy is layered over the global scope, which enforces
   regardless — decided at M3, when the panels are wired
 - Error tracking and uptime monitoring — needed before real users, not before code
@@ -137,3 +133,9 @@ Recorded so nobody reopens them by accident. Full reasoning lives in the linked 
 | Rollback | Code redeploys; schema is forward-only, destructive changes split over two releases | `08-environment.md` |
 | Stack versions | Laravel 13, PHP 8.5, Filament 5, Livewire 4, Pest 4 — verified Aug 2026, re-verify at install | `CLAUDE.md` |
 | Unit of work | The step, not the milestone: one branch, one PR, one sitting, agreed in advance | `06-build-plan.md` |
+| Whether to run M0 before Phase 1 | Deferred 2026-09-07, not cancelled; expires at the end of M4 | `06-build-plan.md` |
+| Docker vs. scripted deploy | Scripted. One box, one app, no registry | `03-architecture.md` |
+| When deployment happens | M11, not M1. A departure from `01-principles.md` §9, accepted and recorded | `06-build-plan.md` |
+| Pest major version | Pest 5, not 4 — taken while the repo has no tests | `CLAUDE.md` |
+| Cache/queue container at M1 | None. `database` drivers until M8, then Valkey not Redis | `08-environment.md` |
+| Commercial and legal notes | Moved to gitignored `docs/private/` so the repo can go public | `05-open-questions.md` |

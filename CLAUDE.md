@@ -12,12 +12,23 @@ Status: **planning. No code exists yet.** Fresh repository — V1 is not ported.
 
 ## Stack
 
-Laravel 13 · PHP 8.5 · Livewire 4 · Filament 5 · Blade · Tailwind · PostgreSQL · Pest 4
+Laravel 13 · PHP 8.5 · Livewire 4 · Filament 5 · Blade · Tailwind · PostgreSQL · Pest 5
 
-Verified August 2026. **Not PHP 8.3** — Laravel 13 advertises it, but Symfony 8 transitive
-dependencies force 8.4 in practice. 8.5 is officially supported and its active support runs
-a year longer than 8.4's, which expires December 2026. Re-verify at install
-(`06-build-plan.md` M1); never take a version number from an agent's memory, including mine.
+Re-verified 2026-09-08 against packagist and php.net, replacing the August figures.
+
+**PHP 8.5**, because 8.4's active support ends 2026-12-31 while 8.5's runs to 2027-12-31.
+That reason stands alone. **Not PHP 8.3**, but not for the reason previously recorded here:
+Laravel 13 declares `php ^8.3` and every `symfony/*` constraint in it reads `^7.4 || ^8.0`,
+so 8.3 does not fail — it silently resolves the older Symfony 7.4 line, because the 8.x line
+Composer prefers (`symfony/console` 8.1) requires `>= 8.4.1`. Nobody ran the 8.3-pinned
+resolution, so this is a claim about the *preferred* resolution, not an absolute floor.
+
+**Pest 5**, not 4. 5.1.4 is current, `pest-plugin-laravel` 5.x targets Laravel 13, and the
+jump costs nothing on a repository that contains no tests yet — taken now precisely because
+later it stops being free.
+
+Re-verify at install (`06-build-plan.md` M1); never take a version number from an agent's
+memory, including mine.
 
 ## Hard rules (do not violate without an explicit decision)
 
@@ -76,7 +87,7 @@ the work stops.
    can maintain. After code: what changed and what to look at. No commentary in between.
 4. **Never take an API from an agent's memory either.** `Stack` above says it about version
    numbers; it is equally true of method signatures. Laravel 13, Filament 5, Livewire 4 and
-   Pest 4 are partly newer than any model's training. Read `vendor/` or the official docs
+   Pest 5 are partly newer than any model's training. Read `vendor/` or the official docs
    before using something uncertain, and never invent a signature because it looks
    plausible.
 5. **"Done" means the check was run.** Not reasoned about, not expected to pass — run, with
@@ -103,6 +114,11 @@ the work stops.
 | `docs/06-build-plan.md` | You're asking what to build next, or whether a step is done |
 | `docs/07-conventions.md` | You're about to write code — naming, layout, keys, tests, done |
 | `docs/08-environment.md` | You're touching local setup, CI, deploy or rollback |
+| `docs/private/*` | Anything about money, legal exposure, or who the pilot is |
+
+`docs/private/` is **gitignored** — readable locally, never pushed — so the repository can be
+made public without a rewrite. Never move its contents into a tracked file, and never restate
+them in one; a public doc may point at it, nothing more.
 
 All docs are **living**. New facts about clients, workflows and constraints arrive
 continuously and get folded into the relevant file — the docs are never "finished".

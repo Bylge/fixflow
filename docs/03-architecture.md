@@ -214,8 +214,12 @@ shape costs more than the alternative:
 
 ## Deployment
 
-- One command, from week one. Daily updates during the pilot depend on it
-- Docker or a scripted deploy — decided when the first server exists, not before
+- One command. `01-principles.md` §9 asked for it from week one; the owner deferred it to
+  **M11** on 2026-09-08 while the project has no users, accepting the cost. M1 still keeps
+  the app deployable in shape — env-driven config, migrations, a `/up` route
+- **Scripted, not Docker** — decided 2026-09-08. One box, one application, no orchestration
+  and no registry. Revisit only if the pilot lands on hardware we do not control, where an
+  image is a handover mechanism rather than a deployment one
 - Environments: local, and the pilot server. No staging until there is something to stage
 - Forward-only migrations once the pilot has real data
 - Backups: whoever owns the server owns the backups, agreed in writing before go-live. A

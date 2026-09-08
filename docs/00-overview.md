@@ -24,9 +24,9 @@ decisions — what statuses existed, what fields mattered, what turned out to be
 ## Who it is for
 
 - **Segment:** companies up to roughly 20–30 people
-- **First pilot:** an IT-support company providing outsourced IT services to
-  micro-businesses such as pharmacies. Itself within the target size range. The pilot is
-  their *internal* desk — their own staff reporting and resolving.
+- **First pilot:** a small services company inside the target size range, running its own
+  *internal* desk — their own staff reporting and resolving. Who they are, and the shape of
+  their client relationships, is in `docs/private/01-pilot-and-commercial.md` (not in git).
 - **Second wave (if the pilot works):** similar small firms, reached through direct
   introductions rather than through marketing.
 
@@ -40,7 +40,7 @@ afternoon**. Feature parity with any of them is neither achievable nor desirable
 | | Reporter | Resolver | Status |
 |---|---|---|---|
 | **Case A — internal desk** | employee of company X | staff of company X | **This is what we build** |
-| **Case B — cross-company desk** | employee of client firm (pharmacy) | staff of the IT firm | Possible future, not built |
+| **Case B — cross-company desk** | employee of a client company | staff of the desk's company | Possible future, not built |
 
 Both are the same core with one difference: whether the requester belongs to the same
 company as the desk. The domain is modelled so Case B is an additive change later
