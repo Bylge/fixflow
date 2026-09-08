@@ -135,7 +135,7 @@ the rest of deployment.
 
 | Step | Does | Check |
 |---|---|---|
-| M1.1 | GitHub Pro; ruleset on `main` requiring a PR and the four checks | `gh api repos/Bylge/fixflow/rulesets` returns one active ruleset naming all four |
+| M1.1 | Repository public + all-rights-reserved `LICENSE`; ruleset on `main` requiring a pull request | A direct push to `main` is **rejected**, and `gh api repos/Bylge/fixflow/rulesets` returns one `active` ruleset |
 | M1.2 | WSL toolchain: PHP 8.5 + extensions, Composer, Node 24, git, gh, Docker | One chained command reports PHP 8.5, every required extension, and a reachable `docker` |
 | M1.3 | Repo re-cloned into `~/code/fixflow`; Windows copy archived; session moves | `git -C ~/code/fixflow log` shows the same three commits; the Windows copy is renamed, not deleted |
 | M1.4 | Compose: `postgres` and `mailpit`, with the PostgreSQL 18 volume path proven | `docker compose up -d` reports healthy, and a row survives `down` then `up` |
@@ -144,12 +144,28 @@ the rest of deployment.
 | M1.7 | Filament 5 installed as a package — no panel, no resources | `composer show --locked filament/filament` reports 5.x and `artisan about` exits 0 |
 | M1.8 | Frontend toolchain and first asset build | `npm ci && npm run build` produces `public/build/manifest.json` |
 | M1.9 | Resolved versions recorded back into this file | A script asserts every version recorded here matches the lockfiles |
-| M1.10 | CI: `lint`, `static`, `test` against a PostgreSQL service container | Those three jobs conclude `success` on a pull request |
-| M1.11 | CI: `i18n` — `en`/`pl` key parity, with its red path proven | Four jobs green; a deliberately unpaired key turns `i18n` red, then is reverted |
+| M1.10 | CI: `lint`, `static`, `test` against a PostgreSQL service container, then added to the ruleset as required checks | Those three jobs conclude `success` on a pull request, and the ruleset lists all three |
+| M1.11 | CI: `i18n` — `en`/`pl` key parity, added as the fourth required check, red path proven | Four jobs green and all four required; a deliberately unpaired key turns `i18n` red, then is reverted |
 | M1.12 | Exit proof: red blocks the merge | A failing test leaves the PR unmergeable; removing it makes it mergeable |
 
-Twelve steps, worked in order. M1.1 and M1.2 need things only the owner can supply — a paid
-plan, a sudo password typed interactively, and a GUI toggle in Docker Desktop.
+Twelve steps, worked in order.
+
+**Why the required status checks arrive at M1.10 and M1.11 rather than M1.1.** A ruleset that
+requires a check no workflow produces leaves every pull request permanently unmergeable —
+M1.1 would wedge the milestone it opens. So M1.1 turns on the pull-request requirement alone,
+and each check becomes required in the step that creates the job behind it. The gating is not
+weakened and does not slip out of the milestone; it is attached to the thing it gates. M1.12
+proves the whole mechanism, which is where the exit criterion is actually met.
+
+**Public, not paid.** Merge gating needs rulesets, which are free on a public repository and
+a paid feature on a private one. The repository was made public at M1.1 under an
+all-rights-reserved `LICENSE` — readable, not open source, and no commercial right is
+granted. Commercial and pilot-identifying material had already moved to `docs/private/`. The
+side benefits are unlimited Actions minutes and secret-scanning push protection, both of
+which this plan leans on.
+
+M1.2 still needs things only the owner can supply: a sudo password typed interactively, and
+the Docker Desktop WSL-integration toggle.
 
 ## M2 — Tenancy and identity · L
 
