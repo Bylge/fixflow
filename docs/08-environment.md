@@ -14,6 +14,12 @@ Cross-filesystem access is slow enough to be felt on every Composer install and 
 run, and file watching for Vite is unreliable across the boundary. This one has a cost
 today: the docs currently sit on the Windows side and move at M1.
 
+**`docs/private/` does not travel with a clone.** It is gitignored, so any fresh checkout —
+the M1.3 move into WSL included — arrives without the files `CLAUDE.md` sends agents to read.
+Copy the directory across by hand and confirm it is there before deleting the copy you took
+it from. This is the accepted cost of keeping the repository publishable
+(`docs/private/README.md`).
+
 **Git starts now, not at M1.** The repository — `github.com/Bylge/fixflow` — is created on
 the Windows side while the docs still live there, so planning changes are versioned and
 revertible from the first commit. History travels with the folder, so the M1 move into WSL

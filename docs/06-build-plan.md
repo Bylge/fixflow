@@ -241,8 +241,10 @@ notifications: assigned to me, new reply on my ticket. Per-user on/off.
 Depends on the mail decision in `05-open-questions.md`. If that is still open when M7 ends,
 it is blocking by then — flag it at M5.
 
-**Exit:** both emails arrive in a real inbox from the production domain, dispatched after
-commit, with correct tenant context inside the job.
+**Exit:** both emails arrive in Mailpit, dispatched after commit, with correct tenant context
+inside the job. Delivery from the real domain is **M11's** exit, not this one — there is no
+production host until then, and an exit criterion that cannot be satisfied when the milestone
+runs is exactly the partial credit rule 1 forbids.
 
 ## M9 — API surface and finding tickets · M
 
@@ -268,7 +270,9 @@ A server exists, and one command ships a commit to it. **Scripted, not Docker** 
 registry, which is what `01-principles.md` §9 means by boring. Revisit only if the pilot
 lands on hardware we do not control.
 
-An owner-controlled VPS, provisioned with PHP 8.5, PostgreSQL, nginx and php-fpm. TLS from
+An owner-controlled VPS, provisioned with PHP 8.5, nginx, php-fpm and PostgreSQL **on the
+same major as local Compose and CI** — `08-environment.md` refuses SQLite for parity reasons
+that a version drift would quietly undo. TLS from
 Let's Encrypt on the host itself. A dedicated `deploy` user and an SSH keypair used for
 nothing else, its private half in Actions secrets. Assets are built **in CI** and shipped
 with the release, so the server never needs Node. The CD sequence, the queue-worker restart
@@ -279,7 +283,9 @@ The production database password is generated on the host and lives only in the 
 it.
 
 **Exit:** one push to `main` ships that commit and `curl https://<host>/up` returns 200
-without `-k`; a failed health check fails the deploy loudly.
+without `-k`; a failed health check fails the deploy loudly. Plus the half of M8's exit that
+needed a host: both notification emails arrive in a real inbox, sent from the production
+domain with SPF/DKIM passing.
 
 ## M10 — Hardening and go-live · M
 
