@@ -116,8 +116,8 @@ the work stops.
 | `docs/08-environment.md` | You're touching local setup, CI, deploy or rollback |
 | `docs/private/*` | Anything about money, legal exposure, or who the pilot is |
 
-`docs/private/` is **gitignored** — readable locally, never pushed — so the repository can be
-made public without a rewrite. Never move its contents into a tracked file, and never restate
+`docs/private/` is **gitignored** — readable locally, never pushed — so the repository went
+public at M1.1 without a rewrite. Never move its contents into a tracked file, and never restate
 them in one; a public doc may point at it, nothing more.
 
 All docs are **living**. New facts about clients, workflows and constraints arrive
@@ -130,6 +130,6 @@ Full set in `docs/07-conventions.md` — read it before writing code. The load-b
 - English identifiers, comments and commits
 - Actions: `App\Actions\Ticket\CreateTicket` — one public method, `handle()`
 - Tests: Pest. Tenant-isolation tests are mandatory for every tenant-owned model
-- Migrations are forward-only once the pilot is live
+- Migrations are forward-only once the pilot is live (`08-environment.md`)
 - `composer check` (Pint + Larastan level max + Pest) passes before anything is pushed
 - Translation keys are `file.context.item`; a key missing from `pl` fails CI

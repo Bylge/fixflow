@@ -88,8 +88,8 @@ the failure mode — it is a conversation of its own, held before M5 starts.
 **Both moved out of git on 2026-09-08.** Pricing, whether the pilot pays, contract terms,
 GDPR/processor status, business entity and liability now live in
 `docs/private/01-pilot-and-commercial.md`. Still open, still unanswered, still read by agents
-locally — simply not published. Making the repository public is the fallback if the project
-finds no clients, and that fallback stays cheap only while this separation holds
+locally — simply not published. The repository went public at M1.1 for merge gating
+(`06-build-plan.md`), and that stays cheap only while this separation holds
 (`docs/private/README.md`).
 
 Nothing technical moved. If a commercial or legal answer ever constrains the architecture,
@@ -131,7 +131,7 @@ Recorded so nobody reopens them by accident. Full reasoning lives in the linked 
 | Static analysis strictness | Larastan level max, no baseline | `07-conventions.md` |
 | Translation key convention | `file.context.item`; missing `pl` key fails CI | `07-conventions.md` |
 | Rollback | Code redeploys; schema is forward-only, destructive changes split over two releases | `08-environment.md` |
-| Stack versions | Laravel 13, PHP 8.5, Filament 5, Livewire 4, Pest 4 — verified Aug 2026, re-verify at install | `CLAUDE.md` |
+| Stack versions | Laravel 13, PHP 8.5, Filament 5, Livewire 4, Pest 5 — re-verified 2026-09-08, re-verify at install | `CLAUDE.md` |
 | Unit of work | The step, not the milestone: one branch, one PR, one sitting, agreed in advance | `06-build-plan.md` |
 | Whether to run M0 before Phase 1 | Deferred 2026-09-07, not cancelled; expires at the end of M4 | `06-build-plan.md` |
 | Docker vs. scripted deploy | Scripted. One box, one app, no registry | `03-architecture.md` |

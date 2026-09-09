@@ -8,6 +8,6 @@ Thumbs.db
 .DS_Store
 
 # Commercial, legal and pilot-identifying notes. Kept out of git so the repository can be
-# made public without a rewrite — the public fallback if the project finds no clients.
+# made public without a rewrite — as it was at M1.1, for merge gating (06-build-plan.md).
 # Still read by agents locally; see docs/private/README.md.
 docs/private/

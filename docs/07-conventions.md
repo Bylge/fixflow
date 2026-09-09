@@ -92,7 +92,8 @@ convention is decided before the first view. It is decided here.
   bodies are data in whatever language the client typed
 
 The M4 lint is a Pest test: it scans Blade, Livewire and Filament resources for literal
-user-facing strings and for key parity between locales. It runs in CI as its own job.
+user-facing strings. It joins the `i18n` CI job, which has checked `en`/`pl` key parity
+since M1 (`08-environment.md`).
 
 ## Tests
 
