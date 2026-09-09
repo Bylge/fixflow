@@ -64,7 +64,7 @@ The order is constrained by one fact: the four foundations are cheapest at the b
 and most expensive at any other time.
 
 So the first stretch of work is skeleton, not features: tenancy, auth, permissions,
-i18n, action layer, deploy pipeline. A boring app that does almost nothing but does it
+i18n, action layer. A boring app that does almost nothing but does it
 correctly for two tenants in two languages. Features are fast once that exists, and
 impossible to add cleanly if it doesn't.
 

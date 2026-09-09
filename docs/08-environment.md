@@ -61,7 +61,7 @@ Runs on every pull request and on push to main. Four jobs, parallel:
 |---|---|
 | `lint` | `pint --test` |
 | `static` | Larastan, level max |
-| `test` | Pest, against a PostgreSQL service container on the production major version |
+| `test` | Pest, against a PostgreSQL service container on the same major as local Compose (`06-build-plan.md` M1.4) |
 | `i18n` | `en`/`pl` key parity from M1; the literal-string lint joins it at M4 |
 
 No version matrix. One PHP version — the one production runs. Testing combinations we will
@@ -75,10 +75,13 @@ check over zero locale directories is a green that cannot go red, which is worse
 at all.
 
 **Main is branch-protected: all four jobs green, or no merge.** That is the entire review
-process, so it does not get bypassed. Enforced with a repository **ruleset**, which requires
-a paid plan on a private repository — that is why the plan is a prerequisite of M1.1, not a
-convenience. Branches must also be up to date with `main` before merging, so nothing merges
-on a green run that no longer describes the code.
+process, so it does not get bypassed. Enforced with a repository **ruleset**, which is free
+on a public repository — that is why the repository went public at M1.1 under an
+all-rights-reserved `LICENSE` (`06-build-plan.md`), not onto a paid plan. Each job becomes a
+*required* check in the step that creates it, M1.10 and M1.11: a ruleset demanding a check
+no workflow produces would leave every pull request unmergeable. Branches must also be up to
+date with `main` before merging, so nothing merges on a green run that no longer describes
+the code.
 
 ## CD
 

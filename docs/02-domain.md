@@ -41,7 +41,7 @@ migration later.
 
 **The super admin is not a membership.** It is a boolean on the user record, read by
 exactly one thing: the admin panel's access gate. It never appears in tenant authorization
-— that is what `01-principles.md` means by no `if ($user->is_admin)`.
+— that is what `03-architecture.md` means by no `if ($user->is_admin)`.
 
 ## Roles and permissions
 

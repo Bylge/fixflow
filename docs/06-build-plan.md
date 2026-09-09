@@ -47,7 +47,7 @@ everything and is impossible to review or revert.
 
 # Phase 1 — Foundations
 
-`01-principles.md:2` — these four cannot be retrofitted. Nothing in Phase 2 starts until
+`01-principles.md` §2 — these four cannot be retrofitted. Nothing in Phase 2 starts until
 Phase 1 is complete, because everything in Phase 2 is cheap afterwards and unfixable before.
 
 ## M0 — Ground truth · S · DEFERRED 2026-09-07 · expires at the end of M4
@@ -64,17 +64,14 @@ The highest-value open item on `05-open-questions.md` is that the domain model r
 described workflow, not an observed one. Twenty minutes with the pilot firm: *show me how a
 request arrives today and what you do with it.*
 
-Deliberately parallel — the foundations don't depend on the answer. Everything in Phase 2
-does.
-
 **Exit (unchanged):** `02-domain.md` either updated or explicitly confirmed against
 observation, with a dated note saying which.
 
 **Re-entry — the deferral expires when M4 ends.** M5 is the first milestone that writes the
 described workflow into an Action and puts a form in front of a real reporter, and at that
 point an unobserved domain model stops being a cheap risk. Either the twenty minutes happen
-before M5.1, or the decision to ship the domain model unvalidated is recorded in
-`05-open-questions.md`, dated, with a name against it. Starting M5 having done neither is the
+before M5 planning starts, or the decision to ship the domain model unvalidated is
+recorded in `05-open-questions.md`, dated, with a name against it. Starting M5 having done neither is the
 failure this note exists to prevent. Whichever comes first also counts: if contact with the
 pilot firm happens for any other reason, the twenty minutes are free.
 
@@ -110,7 +107,7 @@ columns, `SELECT … FOR UPDATE` behind ticket numbering, and constraint timing.
 that proves nothing about production is worse than a slow one.
 
 **Deployment moved out of M1 on 2026-09-08 — a deliberate departure from
-`01-principles.md:78`, recorded rather than glossed.** The principle asks for deployable from
+`01-principles.md` §9, recorded rather than glossed.** The principle asks for deployable from
 week one, and this plan previously refused to defer it. The owner's decision is that FixFlow
 is primarily a portfolio project until a client exists, and paying for a server to host
 something with no users buys no feedback. Deployment is now **M11**, and its cost of being
@@ -122,7 +119,7 @@ health route exists from the skeleton onward. The expensive thing to retrofit is
 application that assumes it runs on a laptop — not a CD workflow, which is a day's work
 against an app already shaped for it.
 
-Local setup, the four CI jobs and the deploy steps are specified in `08-environment.md`;
+Local setup and the four CI jobs are specified in `08-environment.md`;
 `composer check` and the definition of done in `07-conventions.md`. M1 is where both stop
 being documents and start being enforced. **The repo moves into the WSL2 filesystem here** —
 doing that once branches are in flight is needless friction.
@@ -137,7 +134,7 @@ the rest of deployment.
 |---|---|---|
 | M1.1 | Repository public + all-rights-reserved `LICENSE`; ruleset on `main` requiring a pull request | A direct push to `main` is **rejected**, and `gh api repos/Bylge/fixflow/rulesets` returns one `active` ruleset |
 | M1.2 | WSL toolchain: PHP 8.5 + extensions, Composer, Node 24, git, gh, Docker | One chained command reports PHP 8.5, every required extension, and a reachable `docker` |
-| M1.3 | Repo re-cloned into `~/code/fixflow`; Windows copy archived; session moves | `git -C ~/code/fixflow log` shows the same three commits; the Windows copy is renamed, not deleted |
+| M1.3 | Repo re-cloned into `~/code/fixflow`; gitignored `docs/private/` copied across by hand; Windows copy archived; session moves | `git -C ~/code/fixflow log --oneline` matches the Windows copy commit for commit; `docs/private/` is present in the clone; the Windows copy is renamed, not deleted |
 | M1.4 | Compose: `postgres` and `mailpit`, with the PostgreSQL 18 volume path proven | `docker compose up -d` reports healthy, and a row survives `down` then `up` |
 | M1.5 | Laravel 13 skeleton on PostgreSQL with Pest 5; SQLite eradicated | `artisan migrate` succeeds against `pgsql` and no `sqlite` reference survives anywhere |
 | M1.6 | The gate: `pint.json`, `phpstan.neon`, `composer check` | `composer check` exits 0 from a clean tree and leaves it clean |
@@ -192,7 +189,7 @@ no tenant surface.
 date formatting decided once. A check in CI that fails on literal user-facing strings in
 Blade.
 
-Small, and permanently expensive to skip — `01-principles.md:20`.
+Small, and permanently expensive to skip — `01-principles.md` §2.
 
 **Exit:** the entire Phase 1 skeleton renders in both languages with no literal strings, and
 the CI check catches a deliberately hardcoded one.
@@ -237,9 +234,9 @@ a developer and without a seeder.
 
 ## M8 — Notifications · M
 
-Supervised queue worker and scheduler in the deploy. Transactional mail provider with
-SPF/DKIM on the real domain. Two notifications: assigned to me, new reply on my ticket.
-Per-user on/off.
+Queue worker and scheduler, run locally here; the M11 deploy is what puts them under
+supervision on a host. Transactional mail provider with SPF/DKIM on the real domain. Two
+notifications: assigned to me, new reply on my ticket. Per-user on/off.
 
 Depends on the mail decision in `05-open-questions.md`. If that is still open when M7 ends,
 it is blocking by then — flag it at M5.

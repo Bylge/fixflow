@@ -147,10 +147,10 @@ also the cheapest possible integration story for any future client.
 
 ## Notifications
 
-Queued mail. Redis if available, database queue otherwise — the queue driver is a config
-decision, not an architectural one. A supervised worker and the scheduler are part of the
-deployment from the beginning, because retrofitting a queue into a synchronous app is
-tedious.
+Queued mail. `database` until M8, then Valkey, not Redis on licence grounds
+(`08-environment.md`) — the queue driver is a config decision, not an architectural one. A
+supervised worker and the scheduler arrive with the queue at M8 and enter the deployment at
+M11 (`06-build-plan.md`).
 
 Mail goes through a real transactional provider with SPF/DKIM configured. `mail()` and
 unauthenticated SMTP are not acceptable for a system people rely on.
